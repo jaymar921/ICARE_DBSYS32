@@ -44,7 +44,6 @@ def createAccount(account: Entity.Account, login_credential: Entity.LoginCredent
         print(e)
 
 
-
 def registerCredentials(login_credential: Entity.LoginCredentials):
     sql: str = f"insert into `login_credentials` (" \
                f"`login_id`," \

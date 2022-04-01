@@ -74,7 +74,7 @@ create table service_records(record_id int(11) primary key, pet_id int not null,
 - STATUS: VARCHAR(30)
 - REMARKS: VARCHAR(100)
 ## TRANSACTION
-```
+```sql
 create table transaction(transact_id int(11) primary key, acc_id varchar(30) not null, amount decimal(10,2) not null, status varchar(15) not null, foreign key(acc_id) references account(acc_id) on delete restrict on update restrict) engine = innodb;
 ```
 - TRANSACT_ID: INT(11) PRIMARY KEY
