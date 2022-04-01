@@ -1,0 +1,87 @@
+div
+{
+	margin: auto; 
+	margin-left: 39%;
+	margin-top: 2%; 
+	width: 59%; 
+	padding: 15px; 
+}
+
+img
+{
+	width: 15%;
+	margin-left: 43%;
+}
+body
+{
+	background-image: url("2.jpg");
+	font-family: 'Arial';
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+form
+{
+	padding: 20px;
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: 0 0 40px rgb(0, 0, 0);
+	align-content: center;
+	margin-left: 1%;
+  text-align: left;
+  border-radius: 5px;
+}
+
+h2
+{
+	text-align: center;
+	color: white;
+}
+
+input
+{
+	font-size: 16px;
+}
+
+p
+{
+	font-size: 16px;
+	color: white;
+	margin-left: 2%;
+}
+
+a
+{
+	font-size: 16px;
+	text-align: center;
+	color:pink
+}
+a:hover
+{
+	color: #FFFF00;
+}
+
+button
+{
+	font-size: 16px; 
+	padding: 15px; 
+	background-color: #89CFF0; 
+	width: 20%;  
+	margin-left: 40%;
+}
+
+button:hover 
+{
+	background-color: pink;	
+}
+
+button:active {
+  background-color: #FFFF00 ;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.cancel
+{
+	margin-left: 50%;
+}
