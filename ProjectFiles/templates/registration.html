@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset = "utf-8">
+	<meta name = "viewport" content = "width-device-width, initial-scale = 1">
+	<title>Registration</title>
+	<link rel="stylesheet" href="registration.css">
+</head>
+<body>
+	<div>
+		<form method = "GET" action = "registration.html">
+			<img src ="1.png">
+			<h2>Registration</h2>
+			<br/>
+			<p>
+				<b>Last Name: </b>&nbsp;&nbsp;
+				<input type = "text" name = "lastname" placeholder="Enter Lastname" size="23" required/>
+				&emsp;&emsp;&emsp;
+				<b>First Name: </b>&nbsp;&nbsp;
+				<input type = "text" name = "firstname" placeholder="Enter Firstname" size="22" required/>
+			</p>
+			<p>
+				<b>Birthdate: </b>&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type = "date" name = "birthdate" style="width: 224px" required />
+				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+			</p>
+			<p>
+				<b>Address: </b>&emsp;&nbsp;&nbsp;
+				<input type = "text" name = "address" placeholder=" House No. 		Street,  			Barangay 	 	City  		Zip Code" size="71" required />
+			</p>
+			<p>
+				<b>Mobile No:</b>&emsp;			
+				<input type = "tel" name = "number" placeholder="09123456789" min="0" step="1" maxlength="11" size="23" required />
+				&emsp;&emsp;
+				<b>Email address: </b>&nbsp;
+				<input type = "text" name = "email" placeholder="email@email.com" size="22" required/>
+			</p>
+			<p>
+				<b>Password:</b>&emsp;
+				<input type="password" name="password" placeholder="&#128274; ********" size="23" required>
+				&nbsp;&nbsp;
+				<b>Confirm Password:</b>
+				<input type="password" name="confirm" placeholder="&#128274; ********" size="22" required>
+			</p>
+			<br/>
+			<button type ="submit" name = "register" value = "register">Register</button>
+			<p style="text-align: center;"><a href="registration.html">Cancel</a></p>
+		</form>
+	</div>
+	
+</body>
+</html>
