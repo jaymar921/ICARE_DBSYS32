@@ -110,3 +110,15 @@ describe transaction;
 describe activity_record;
 describe employee_activity;
 ```
+## Show all entities from tables
+```sql
+select * from account;
+select * from employee;
+select * from login_credentials;
+select * from pets;
+select * from service;
+select * from service_records;
+select * from transaction;
+select * from activity_record;
+select * from employee_activity;
+```
