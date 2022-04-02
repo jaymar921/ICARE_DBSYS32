@@ -8,7 +8,7 @@
 </head>
 <body>
 	<div>
-		<form method = "POST" action = "register_account">
+		<form id="registration_form" method = "POST" action = "/register_account">
 			<img src ="static/images/1.png">
 			<h2>Registration</h2>
 			<br/>
@@ -53,6 +53,11 @@
 				<input type="password" name="confirm" placeholder="&#128274; ********" size="22" required>
 			</p>
 			<br/>
+			{% if register_remark != "" %}
+			<p style="text-align: center;color:red;">
+				{{register_remark}}
+			</p>
+			{% endif %}
 			<button type ="submit" name = "register" value = "register">Register</button>
 			<p style="text-align: center;"><a href="/login">Cancel</a></p>
 		</form>

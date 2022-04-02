@@ -54,6 +54,8 @@ def admin_registration():
 
 @app.route("/register_account", methods=['POST'])
 def register_account():
+    if request.form['password'] != request.form['confirm']:
+        return render_template("registration.html", register_remark="Password mismatch!")
     data: dict = {
         'lastname': request.form['lastname'],
         'firstname': request.form['firstname'],
@@ -68,8 +70,8 @@ def register_account():
         'email': request.form['email'],
         'contact': request.form['number'],
     }
-    new_account: list = parseNewAccount(data, generateAccountID())
-    createAccount(new_account[0], new_account[1])
+    # new_account: list = parseNewAccount(data, generateAccountID())
+    # createAccount(new_account[0], new_account[1])
     return redirect(url_for("login"))
 
 
