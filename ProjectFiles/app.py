@@ -1,6 +1,6 @@
 from database import createAccount
 from utility import generateUUID, hashData
-from ProjectFiles.Entity.Entity import Account,LoginCredentials
+from ProjectFiles.Entity.Entity import Account, LoginCredentials
 
 
 # Run test
