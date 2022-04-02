@@ -1,7 +1,7 @@
-from database import createAccount, generateAccountID, createEmployee
+from database import createAccount, generateAccountID, createEmployee, loginAccount
 from ProjectFiles.Entity.Entity import Account, LoginCredentials
 from flask import Flask, render_template, request, redirect, url_for
-from utility import parseNewAccount, parseNewEmployeeAccount
+from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData
 
 app = Flask('__main__')
 
@@ -9,6 +9,15 @@ app = Flask('__main__')
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+
+@app.route("/login_account", methods=['POST'])
+def login_account():
+    data: list = loginAccount(request.form['email'], hashData(request.form['psw']), isEmail(request.form['email']))
+    if len(data) == 2:
+        return f"Logged IN {data[0]}"
+    else:
+        return f"Invalid account"
 
 
 @app.route("/register")

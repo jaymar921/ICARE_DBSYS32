@@ -1,5 +1,6 @@
 from mysql import connector
 import utility
+from ProjectFiles.Entity.Entity import LoginCredentials, Account
 from Entity import Entity
 
 # connect to the database
@@ -114,3 +115,44 @@ def createEmployeeAccount(account: Entity.Employee):
     cursor.execute(sql)
     database.commit()
     cursor.close()
+
+
+def loginAccount(username: str, password: str, is_email: bool = False) -> list:
+    if is_email:
+        sql = f"select * from `login_credentials` where email='{username}' and password='{password}'"
+    else:
+        sql = f"select * from `login_credentials` where username='{username}' and password='{password}'"
+
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data: list = cursor.fetchall()
+    cursor.close()
+    if len(data) != 0:
+        loginCred: LoginCredentials = LoginCredentials(
+            login_id=data[0]['login_id'],
+            acc_id=data[0]['acc_id'],
+            username=data[0]['username'],
+            password=data[0]['password'],
+            email=data[0]['email'],
+            contact=data[0]['contact_no']
+        )
+        sql: str = f"select * from `account` where acc_id='{loginCred.acc_id}'"
+        cursor = database.cursor(dictionary=True)
+        cursor.execute(sql)
+        data: dict = cursor.fetchall()
+        cursor.close()
+        account: Account = Account(
+            data[0]["acc_id"],
+            data[0]["lastname"],
+            data[0]["firstname"],
+            data[0]["birthdate"],
+            data[0]["house_no"],
+            data[0]["street"],
+            data[0]["barangay"],
+            data[0]["city"],
+            data[0]["zip"],
+            data[0]["registry_date"]
+        )
+        return [account, loginCred]
+    return []
+

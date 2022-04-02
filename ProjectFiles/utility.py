@@ -80,5 +80,5 @@ def parseNewEmployeeAccount(data: dict, account_id: int) -> list:
     return [account, loginCred]
 
 
-def getAccount(username: str, password: str) -> Account:
-    pass
+def isEmail(username: str) -> bool:
+    return len(username.split("@")) == 2 and len(username.split(".")) == 2
