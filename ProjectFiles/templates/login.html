@@ -99,7 +99,9 @@ a:hover
 			<div class="imgcontainer">
 				<img src='static/images/1.png' alt="Image" height="90" width="90">
 				<h2>Login</h2>
-			
+				{% if log_remark != "" %}
+					<p style="color:red">{{ log_remark }}</p>
+				{% endif %}
 		  	</div>
 			<div class="container">
 				<label for="email"><b>Email</b></label>

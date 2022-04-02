@@ -8,7 +8,7 @@ app = Flask('__main__')
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("login.html", log_remark="")
 
 
 @app.route("/login_account", methods=['POST'])
@@ -17,7 +17,7 @@ def login_account():
     if len(data) == 2:
         return f"Logged IN {data[0]}"
     else:
-        return f"Invalid account"
+        return render_template("login.html", log_remark="Invalid Credentials")
 
 
 @app.route("/register")
