@@ -1,5 +1,7 @@
 import uuid
 import hashlib
+from Entity.Entity import Account, LoginCredentials, Employee
+from datetime import date
 
 
 def get_configuration() -> dict:
@@ -26,3 +28,57 @@ def generateUUID() -> str:
 def hashData(data: str) -> str:
     result = hashlib.md5(data.encode()).hexdigest()
     return str(result)[0:30]
+
+
+def parseNewAccount(data: dict, account_id: int) -> list:
+    account: Account = Account(
+        generateUUID(),
+        data["lastname"],
+        data["firstname"],
+        data["birthdate"],
+        data["house_no"],
+        data["street"],
+        data["barangay"],
+        data["city"],
+        data["zip"],
+        str(date.today())
+    )
+    loginCred: LoginCredentials = LoginCredentials(
+        login_id=account_id,
+        acc_id=account.acc_id,
+        username=data["username"],
+        password=hashData(data["password"]),
+        email=data["email"],
+        contact=data["contact"]
+    )
+    return [account, loginCred]
+
+
+def parseNewEmployeeAccount(data: dict, account_id: int) -> list:
+    account: Employee = Employee(
+        generateUUID(),
+        data["lastname"],
+        data["firstname"],
+        data["birthdate"],
+        data["house_no"],
+        data["street"],
+        data["barangay"],
+        data["city"],
+        data["zip"],
+        str(date.today()),
+        generateUUID(),
+        data['position']
+    )
+    loginCred: LoginCredentials = LoginCredentials(
+        login_id=account_id,
+        acc_id=account.acc_id,
+        username=data["username"],
+        password=hashData(data["password"]),
+        email=data["email"],
+        contact=data["contact"]
+    )
+    return [account, loginCred]
+
+
+def getAccount(username: str, password: str) -> Account:
+    pass

@@ -94,35 +94,35 @@ a:hover
 
 
 <div class="whole">
-		<form action="" method="post";>
+		<form action="" method="post">
 
 			<div class="imgcontainer">
-			<img src='1.png' alt="Image" height="90" width="90">
-			<h2>Login</h2>
+				<img src='static/images/1.png' alt="Image" height="90" width="90">
+				<h2>Login</h2>
 			
-		  </div>
+		  	</div>
+			<div class="container">
+				<label for="email"><b>Email</b></label>
+				<input type="text" placeholder="Enter Email" name="email" required>
 
-		  <div class="container">
-			    <label for="email"><b>Email</b></label>
-			    <input type="text" placeholder="Enter Email" name="email" required>
+				<label for="psw"><b>Password</b></label>
+				<input type="password" placeholder="Enter Password" name="psw" required>
 
-			    <label for="psw"><b>Password</b></label>
-			    <input type="password" placeholder="Enter Password" name="psw" required>
-			    
 				<div class="center">
-			    <button type="submit" >Login</button>
-				</div>
-			    <label>
-			      <input type="checkbox" checked="checked" name="remember"> Remember me
-			    </label>
-		  </div>
+					<button type="submit" >Login</button>
+					<div>
+						<label>
+							<input type="checkbox" checked="checked" name="remember"> Remember me
+						</label>
+					</div>
 
 			
-		    <button type="button" class="cancelbtn">Cancel</button>
-		    <span class="psw"><a href="#">Forgot password?</a></span>
-		  </div>
-</div>
-</form>
+					<button type="button" class="cancelbtn">Cancel</button>
+					<span class="psw"><a href="#">Forgot password?</a></span>
+		  		</div>
+			</div>
 
+	</form>
+</div>
 </body>
 </html>

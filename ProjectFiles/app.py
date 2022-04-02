@@ -1,34 +1,68 @@
-from database import createAccount
-from utility import generateUUID, hashData
+from database import createAccount, generateAccountID, createEmployee
 from ProjectFiles.Entity.Entity import Account, LoginCredentials
+from flask import Flask, render_template, request, redirect, url_for
+from utility import parseNewAccount, parseNewEmployeeAccount
+
+app = Flask('__main__')
 
 
-# Run test
-def sample_account():
-    account: Account = Account(
-        str(generateUUID()+""),
-        "Barro",
-        "Gladys",
-        "2000-01-01",
-        "123",
-        "Cebu",
-        "Cebu",
-        "Cebu",
-        "6000",
-        "2022-04-01"
-    )
-    loginCred: LoginCredentials = LoginCredentials(
-        6,
-        account.acc_id,
-        "Glady544",
-        hashData("#h3ll0_123"),
-        "glady@testemail.com",
-        "09123123456"
-    )
-    print(account)
-    print(loginCred)
-    createAccount(account, loginCred)
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+@app.route("/register")
+def register():
+    return render_template("registration.html")
+
+
+@app.route("/admin_register")
+def admin_register():
+    return render_template("registration_admin.html")
+
+
+@app.route("/register_account_employee", methods=['POST'])
+def admin_registration():
+    data: dict = {
+        'lastname': request.form['lastname'],
+        'firstname': request.form['firstname'],
+        'birthdate': request.form['birthdate'],
+        'house_no': request.form['house_no'],
+        'street': request.form['street'],
+        'barangay': request.form['barangay'],
+        'city': request.form['city'],
+        'zip': request.form['zip'],
+        'username': request.form['username'],
+        'password': request.form['password'],
+        'email': request.form['email'],
+        'contact': request.form['number'],
+        'position': request.form['position']
+    }
+    new_account: list = parseNewEmployeeAccount(data, generateAccountID())
+    createEmployee(new_account[0], new_account[1])
+    return redirect(url_for("login"))
+
+
+@app.route("/register_account", methods=['POST'])
+def register_account():
+    data: dict = {
+        'lastname': request.form['lastname'],
+        'firstname': request.form['firstname'],
+        'birthdate': request.form['birthdate'],
+        'house_no': request.form['house_no'],
+        'street': request.form['street'],
+        'barangay': request.form['barangay'],
+        'city': request.form['city'],
+        'zip': request.form['zip'],
+        'username': request.form['username'],
+        'password': request.form['password'],
+        'email': request.form['email'],
+        'contact': request.form['number'],
+    }
+    new_account: list = parseNewAccount(data, generateAccountID())
+    createAccount(new_account[0], new_account[1])
+    return redirect(url_for("login"))
 
 
 if __name__ == '__main__':
-    sample_account()
+    app.run(host="0.0.0.0", port=5000, debug=True)

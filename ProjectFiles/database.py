@@ -62,3 +62,55 @@ def registerCredentials(login_credential: Entity.LoginCredentials):
     cursor.execute(sql)
     database.commit()
     cursor.close()
+
+
+def generateAccountID() -> int:
+    sql: str = f"select * from `login_credentials`"
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data: list = cursor.fetchall()
+    data = data[len(data)-1]
+    cursor.close()
+    return data['login_id']+1
+
+
+def createEmployee(account: Entity.Employee, login_cred: Entity.LoginCredentials):
+    try:
+        acc_id: str = account.acc_id
+        sql: str = f"INSERT INTO `account` (" \
+                   f"`acc_id`," \
+                   f"`lastname`," \
+                   f"`firstname`,`" \
+                   f"birthdate`,`" \
+                   f"house_no`," \
+                   f"`street`," \
+                   f"`barangay`," \
+                   f"`city`," \
+                   f"`zip`," \
+                   f"`registry_date`) VALUES(" \
+                   f"'{acc_id}'," \
+                   f"'{account.lastname}'," \
+                   f"'{account.firstname}'," \
+                   f"'{account.birthdate}'," \
+                   f"'{account.house_no}'," \
+                   f"'{account.street}'," \
+                   f"'{account.barangay}'," \
+                   f"'{account.city}'," \
+                   f"'{account.zip}'," \
+                   f"'{account.registry_date}');"
+        cursor = database.cursor()
+        cursor.execute(sql)
+        database.commit()
+        cursor.close()
+        registerCredentials(login_cred)
+        createEmployeeAccount(account)
+    except Exception as e:
+        print(e)
+
+
+def createEmployeeAccount(account: Entity.Employee):
+    sql: str = f"insert into `employee` (`emp_id`,`acc_id`,`position`) values ('{account.emp_id}','{account.acc_id}','{account.position}')"
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()

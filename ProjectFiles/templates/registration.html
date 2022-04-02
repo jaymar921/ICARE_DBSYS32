@@ -4,12 +4,12 @@
 	<meta charset = "utf-8">
 	<meta name = "viewport" content = "width-device-width, initial-scale = 1">
 	<title>Registration</title>
-	<link rel="stylesheet" href="registration.css">
+	<link rel="stylesheet" href="static/registration.css">
 </head>
 <body>
 	<div>
-		<form method = "GET" action = "registration.html">
-			<img src ="1.png">
+		<form method = "POST" action = "register_account">
+			<img src ="static/images/1.png">
 			<h2>Registration</h2>
 			<br/>
 			<p>
@@ -20,13 +20,23 @@
 				<input type = "text" name = "firstname" placeholder="Enter Firstname" size="22" required/>
 			</p>
 			<p>
+				<b>Username: </b>&nbsp;&nbsp;
+				<input type = "text" name = "username" placeholder="Enter Username" size="23" required/>
+				&emsp;&emsp;&emsp;
 				<b>Birthdate: </b>&nbsp;&nbsp;&nbsp;&nbsp;
 				<input type = "date" name = "birthdate" style="width: 224px" required />
 				&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 			</p>
 			<p>
 				<b>Address: </b>&emsp;&nbsp;&nbsp;
-				<input type = "text" name = "address" placeholder=" House No. 		Street,  			Barangay 	 	City  		Zip Code" size="71" required />
+				<div class="address_line">
+					<input type = "text" name = "house_no" placeholder=" House No." size="40" required />
+					<input type = "text" name = "street" placeholder=" Street" size="40" required />
+					<input type = "text" name = "barangay" placeholder=" Barangay" size="40" required />
+					<input type = "text" name = "city" placeholder=" City" size="40" required />
+					<input type = "text" name = "zip" placeholder=" Zip Code" size="40" required />
+				</div>
+
 			</p>
 			<p>
 				<b>Mobile No:</b>&emsp;			
@@ -44,7 +54,7 @@
 			</p>
 			<br/>
 			<button type ="submit" name = "register" value = "register">Register</button>
-			<p style="text-align: center;"><a href="registration.html">Cancel</a></p>
+			<p style="text-align: center;"><a href="/login">Cancel</a></p>
 		</form>
 	</div>
 	
