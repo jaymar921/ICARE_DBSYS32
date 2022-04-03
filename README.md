@@ -115,7 +115,7 @@ describe employee_activity;
 select * from account;
 select * from employee;
 select * from login_credentials;
-select * from pets;
+select * from pet;
 select * from service;
 select * from service_records;
 select * from transaction;
