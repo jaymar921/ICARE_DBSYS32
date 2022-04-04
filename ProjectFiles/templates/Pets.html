@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+	body{
+		margin: 0;
+		padding: 0;
+		font-family: Century Gothic;
+		background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("{{url_for('static',filename='images/pets_bg.jpg')}}");
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: cover;
+	}
+
+	.column {
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-moz-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			-o-transform: translate(-25%, -50%);
+			transform: translate(-50%, -50%);
+			width: 60%;
+			height: 400px;
+			padding: 50px 40px;
+			background: rgba(0,0,0,0.8);
+			box-shadow: 0 0 40px rgb(0, 0, 0);
+			margin-top: 20%;
+			margin-left: 26%;
+			align-content: center;
+			text-align:center;
+	}
+
+	ul{
+		float: right;
+		list-style-type: none;
+		margin-top: -140px;
+		margin-right: 30px;
+	}
+
+	ul li{
+		display: inline-block;
+	}
+
+	ul li a{
+		text-decoration: none;
+		color: #fff;
+		padding: 5px 20px;
+		border: 1px solid transparent;
+		transition: 0.6s ease;
+	}
+
+	ul li a:hover{
+		background-color: #fff;
+		color: #000;
+	}
+
+	ul li.active a{
+		background-color: #fff;
+		color: #000;
+	}
+
+	h2{
+		text-align: center;
+		color: #fff;
+		font-size: 30px;
+		margin-top: 0px;
+	}
+
+	.button{
+		text-align: center;
+	}
+
+	.bttn{
+		border: 1px solid #fff;
+		padding: 10px 30px;
+		color: #fff;
+		text-decoration: none;
+		transition: 0.6s ease;
+	}
+
+	.bttn:hover{
+		background-color: #fff;
+		color: #000;
+	}
+
+	.label{
+		position: absolute;
+		top: 31%;
+		left: 24%;
+		font-size: 20px;
+	}
+
+	.lbl{
+		color: #fff;
+		font-weight: bolder;
+	}
+
+	.column{
+		position: absolute;
+		top: 39%;
+		left: 23%;
+	}
+
+	.col{
+		text-decoration: none;
+		color: #fff;
+		padding: 3px 10px;
+	}
+
+	table{
+		position: relative;
+		padding: 10px 10px 10px 10px;
+		border: 1px solid white;
+	}
+
+
+
+	.modal{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		width: 60%;
+		background: rgba(255,255,255,0.7);
+	}
+	
+</style>
+	<title>{{account}}'s Pets</title>
+	<link type="text/css" rel="stylesheet" href="{{url_for('static',filename='design.css')}}">
+</head>
+<body>
+
+<div class="whole">
+
+
+		<div class="imgcontainer">
+			<img src="{{url_for('static',filename='images/1.png')}}" alt="Image" height="95" width="95" hspace="30" vspace="30">
+			<h2>Your Pets</h2>
+
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/services/{{account}}">Services</a></li>
+				<li class="active"><a href="#">Pets</a></li>
+				<li><a href="#">Contact</a></li>
+				<li><a href="/logout/{{account}}">Log Out</a></li>
+			</ul>
+		</div>
+
+		<div class="button">
+			<a class="bttn" onclick="document.getElementById('modal_pet').style.display = 'block';">Register</a>
+		</div>
+
+		<div class="column">
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Age</th>
+					<th>Gender</th>
+					<th>Breed</th>
+					<th>Specie</th>
+					<th>Blood Type</th>
+					<th>Weight(KG)</th>
+					<th>Registry Date</th>
+					<th>Status</th>
+				</tr>
+				{% for x in pets %}
+				<tr>
+					{% for key, value in x.items() %}
+						<td>{{value}}</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+
+	<div id="modal_pet" class="modal" style="display:none">
+		<form class="design-form" method="POST" action="/register_pet">
+
+			<div class="inner-form">
+				<h3>Register Pet</h3>
+				<div>
+					<p>Name:</p><p><input type="text" name="name" required></p>
+					<p>Specie:</p><p><input type="text" name="specie" required></p>
+				</div>
+				<div>
+					<p>Age:</p><p><input type="number" name="age" required></p>
+					<p>Gender:</p><p>M<input type="radio" name="gender" value="M" required>F<input type="radio" name="gender" value="F" required></p>
+				</div>
+				<div>
+					<p>Breed:</p><p><input type="text" name="breed" required></p>
+					<p>Blood Type:</p><p><input type="text" name="bloodtype" required></p>
+				</div>
+				<div>
+					<p>Weight(KG):</p><p><input type="number" name="weight" required min="0" step="any"></p>
+					<p>Owner:</p><p><input type="text" name="user" value="{{account}}" readonly></p>
+				</div>
+				<input class="form-button" type="submit" name="submit" value="register">
+				<a class="form-button" href="/pets/{{account}}">Cancel</a>
+			</div>
+			<br>
+
+		</form>
+	</div>
+</div>
+</body>
+	<script type="text/javascript" src="{{url_for('static',filename='script.js')}}"></script>
+</html>

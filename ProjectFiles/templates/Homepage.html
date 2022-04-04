@@ -6,7 +6,7 @@
     <title>
         Home Page
     </title>
-	<link rel="stylesheet" href="home.css">
+	<link rel="stylesheet" href="static/home.css">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="keywords" content="footer, address, phone, icons" />
@@ -20,17 +20,22 @@
     <nav class="navbar background">
         <ul class="nav-list" >
             <div class="logo">
-                <img src="icare.png">
+                <img src="static/images/icare.png">
             </div>
-			<li><a href="#"home" class="w3-bar w3-light-grey">Home</a></li>
-            <li><a href="#"web" class="w3-bar w3-light-grey">About Us</a></li>
-            <li><a href="#"pets" class="w3-bar w3-light-grey">Pets</a></li>
-            <li><a href="#"serv" class="w3-bar w3-light-grey">Services</a></li>
+			<li><a href="#home" class="w3-bar w3-light-grey">Home</a></li>
+            <li><a href="#web" class="w3-bar w3-light-grey">About Us</a></li>
+            <li><a href="/pets/{{account}}" class="w3-bar w3-light-grey">Pets</a></li>
+            <li><a href="/services/{{account}}" class="w3-bar w3-light-grey">Services</a></li>
         </ul>
  
         <div class="rightNav">
             <input type="text" name="search" id="search">
-            <button class="btn btn-sm">Search</button>
+            <button class="btn-sm">Search</button>
+			<button class="btn-sm" onclick="location.href='/login'" style="display:{{login}};">Login</button>
+			<button class="btn-sm" onclick="location.href='/logout/{{account}}'" style="display:{{logout}};">Logout</button>
+			{% if account != "" %}
+				<p class="account">{{ account }}</p>
+			{% endif %}
         </div>
     </nav>
  
@@ -41,7 +46,7 @@
                    iCare Pet Services
                 </h1>
 				<p>iCare Pet Services is a mobile application and web application that records the data of the pet owners into the database.It keeps the records of the services that have been provided such as vaccination, deworming, vet assistance, pet breeding, and anti-flea.</p>
-                
+			</div>
         </div>
     </section>
  
@@ -106,16 +111,16 @@
 			<div class="footer-center">
 				<div>
 					<i class="fa fa-map-marker"></i>
-					  <p><span>Different municipalities and within Cebu City</p>
+					<p><span>Different municipalities and within Cebu City</span></p>
 				</div>
 
 				<div>
 					<i class="fa fa-phone"></i>
-					<p>+91 22-27782183</p>
+					<p>+65 912-345-6789</p>
 				</div>
 				<div>
 					<i class="fa fa-envelope"></i>
-					<p><a href="elimdaisy63@gmail.com">elimdaisy63@gmail.com</a></p>
+					<p><a href="icare.uc.tech@gmail.com">elimdaisy63@gmail.com</a></p>
 				</div>
 			</div>
 			<div class="footer-right">

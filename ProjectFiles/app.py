@@ -1,9 +1,18 @@
-from database import createAccount, generateAccountID, createEmployee, loginAccount
+from database import createAccount, generateAccountID, createEmployee, loginAccount, registerPet, getPets
 from ProjectFiles.Entity.Entity import Account, LoginCredentials
-from flask import Flask, render_template, request, redirect, url_for
-from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData
+from flask import Flask, render_template, request, redirect, url_for, session
+from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData, parsePet
 
 app = Flask('__main__')
+app.secret_key = '39cm85yu234m98'
+uuid_data: dict = {}
+
+
+@app.route("/")
+def homepage():
+    if "username" in session:
+        return render_template("homepage.html", account=session['username'], login="none", logout="block")
+    return render_template("homepage.html", login="block", logout="none")
 
 
 @app.route("/login")
@@ -15,9 +24,37 @@ def login():
 def login_account():
     data: list = loginAccount(request.form['email'], hashData(request.form['psw']), isEmail(request.form['email']))
     if len(data) == 2:
-        return f"Logged IN {data[0]}"
+        session['username'] = data[1].username
+        uuid_data[data[1].username] = data[1].acc_id
+        return redirect(url_for("homepage"))
     else:
         return render_template("login.html", log_remark="Invalid Credentials")
+
+
+@app.route("/services/")
+def services_invalid():
+    return redirect(url_for("login"))
+
+
+@app.route('/services/<account>')
+def services(account: str):
+    if account == session['username']:
+        return render_template("services.html", account=account)
+    return redirect(url_for("not_found"))
+
+
+@app.route("/pets/")
+def pets_invalid():
+    return redirect(url_for("login"))
+
+
+@app.route('/pets/<account>')
+def pets(account):
+    if account == session['username']:
+        data = getPets(account)
+        print(data)
+        return render_template("Pets.html", account=account, pets=data)
+    return redirect(url_for("login"))
 
 
 @app.route("/register")
@@ -70,9 +107,51 @@ def register_account():
         'email': request.form['email'],
         'contact': request.form['number'],
     }
-    # new_account: list = parseNewAccount(data, generateAccountID())
-    # createAccount(new_account[0], new_account[1])
+    new_account: list = parseNewAccount(data, generateAccountID())
+    createAccount(new_account[0], new_account[1])
     return redirect(url_for("login"))
+
+
+@app.route("/register_pet", methods=['POST'])
+def register_pet():
+    data: dict = {
+        'name': request.form['name'],
+        'specie': request.form['specie'],
+        'age': request.form['age'],
+        'gender': request.form['gender'],
+        'breed': request.form['breed'],
+        'bloodtype': request.form['bloodtype'],
+        'weight': request.form['weight'],
+        'owner_id': uuid_data[request.form['user']]
+    }
+    registerPet(parsePet(data))
+    return redirect(url_for('pets', account=request.form['user']))
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Cache-Control', 'no-store,no-cache,must-revalide,post-check=0,pre-check=0')
+    return response
+
+
+@app.route("/404")
+def not_found():
+    return "Uh oh... page not found"
+
+
+@app.route("/logout/<account>")
+def logout(account):
+    if account in session['username']:
+        uuid_data[session['username']] = {}
+        session.clear()
+        return redirect(url_for("homepage"))
+    else:
+        return redirect(url_for("not_found"))
+
+
+@app.route("/logout/")
+def logout_invalid():
+    return redirect(url_for("homepage"))
 
 
 if __name__ == '__main__':

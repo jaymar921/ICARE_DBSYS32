@@ -1,6 +1,7 @@
+import random
 import uuid
 import hashlib
-from Entity.Entity import Account, LoginCredentials, Employee
+from Entity.Entity import Account, LoginCredentials, Employee, Pet
 from datetime import date
 
 
@@ -82,3 +83,20 @@ def parseNewEmployeeAccount(data: dict, account_id: int) -> list:
 
 def isEmail(username: str) -> bool:
     return len(username.split("@")) == 2 and len(username.split(".")) == 2
+
+
+def parsePet(data: dict) -> Pet:
+    pet: Pet = Pet(
+        random.randint(0, 9999999),
+        data['owner_id'],
+        data['name'],
+        data['age'],
+        data['gender'],
+        data['breed'],
+        data['specie'],
+        data['bloodtype'],
+        data['weight'],
+        date.today(),
+        "OK"
+    )
+    return pet

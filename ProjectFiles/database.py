@@ -70,9 +70,9 @@ def generateAccountID() -> int:
     cursor = database.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
-    data = data[len(data)-1]
+    data = data[len(data) - 1]
     cursor.close()
-    return data['login_id']+1
+    return data['login_id'] + 1
 
 
 def createEmployee(account: Entity.Employee, login_cred: Entity.LoginCredentials):
@@ -156,3 +156,35 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
         return [account, loginCred]
     return []
 
+
+def registerPet(pet: Entity.Pet):
+    sql: str = f"insert into `pet` (`pet_id`,`owner_id`,`name`,`age`,`gender`,`breed`,`specie`,`blood_type`,`weight`," \
+               f"`registry_date`,`status`) values" \
+               f"(" \
+               f"'{pet.pet_id}'," \
+               f"'{pet.owner_id}'," \
+               f"'{pet.name}'," \
+               f"'{pet.age}'," \
+               f"'{pet.gender}'," \
+               f"'{pet.breed}'," \
+               f"'{pet.specie}'," \
+               f"'{pet.blood_type}'," \
+               f"'{pet.weight}'," \
+               f"'{pet.registry_date}'," \
+               f"'{pet.status}'" \
+               f")"
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+
+
+def getPets(username: str) -> dict:
+    sql: str = f"select `name`,`age`,`gender`,`breed`,`specie`,`blood_type`,`weight`," \
+               f"`registry_date`,`status` from `pet` " \
+               f"p, `login_credentials` l where l.username = '{username}' and p.owner_id = l.acc_id; "
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    cursor.close()
+    return data

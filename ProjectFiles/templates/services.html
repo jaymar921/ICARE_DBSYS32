@@ -1,0 +1,119 @@
+<head>
+	<title>SERVICES</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='services.css')}}">
+</head>
+<body>
+	<ul>
+				<li><a href="/" title="Home">Home</a></li>
+				<li class="active" title="Services"><a href="">Services</a></li>
+				<li><a href="/pets/{{account}}" title="Pets">Pets</a></li>
+				<li><a href=""  title="Contact Us">Contact</a></li>
+				<li><a href="/logout/{{account}}" title="Sign Out">Log Out</a></li>
+			</ul>
+	<div>
+	
+		<form method = "GET" action = "">
+
+			<img src ="{{url_for('static',filename='images/1.png')}}">
+			
+			<h2>Our Services</h2>
+			
+			<h3>			
+			<div class="row">
+			  <div class="column">
+				<div class="card">
+				  <h3>Pet Vaccination</h3>
+				  <img src ="{{url_for('static',filename='images/vaccine_pet.png')}}" width="100" height="100">
+				  <p>Vecciniations prolect your pet
+						 Irom several highly
+					contagious discases such as
+					canine distemper, parvovinus
+					infection and respiratory tract
+					 infections. It also protects
+					against transmissible diseases
+					Such as rabies that also pose
+						  a risk to humans.</p>
+				<button type ="submit">Apply</button>
+				</div>
+			  </div>
+
+			  <div class="column">
+				<div class="card">
+				  <h3>Deworming</h3>
+				  <img src ="{{url_for('static',filename='images/deworm_pet.png')}}">
+				  <p>Deworming is an important
+					preventalive care regime for
+					roducing pansates (intemal
+					and external) and improving
+					your pet's health. It is also
+					important to help to prevent
+					transmission of parasites to
+					you and your human family
+						   members!</p>
+				<button type ="submit">Apply</button>
+				</div>
+			  </div>
+			  <div class="column">
+				<div class="card">
+				  <h3>Tubal Ligation</h3>
+				  <img src ="{{url_for('static',filename='images/tubal_ligation_pet.png')}}">
+				  <p>Tubal igalion permanently
+					preverts pregriancy, so you
+					no longer need any type of
+					bırth control. However, it does
+					not protect against sexually
+					transmitted infecions. Tubal
+					ligation may ako decrease
+					your rsk of ovaran cancer,
+					 especially if the fallopian
+					   tubes are removed</p>
+				<button type ="submit">Apply</button>
+				</div>
+			  </div>
+			  <div class="column">
+				<div class="card">
+				  <h3>Anti Fleas</h3>
+				  <img src ="{{url_for('static',filename='images/anti_fleas_pet.png')}}">
+				  <p>Prevent sickness and disease:
+					   The primary reason to 
+					 protect your cats and dogs 
+					   from fleas and ticks is
+					 to prevent them from getting 
+					   sick from the diseases 
+					  transimitted by these
+					 pests! To make your pet 
+					 happy and healthy.</p>
+				<br>			   
+				<button type ="submit">Apply</button>
+				</div>
+			  </div>
+			  <div class="column">
+				<div class="card">
+				  <h3>Vet Assistance</h3>
+				  <img src ="{{url_for('static',filename='images/assist_pet.png')}}">
+				  <p>By making regular visits to
+					Lhe vet, many problems can
+					he caught carly and therefore
+					taken care of before they turn
+					 into bigger, more serious
+					issues. Monitoring your pet's
+					health also is important in
+					order to make sure he or she
+					is as strong and as healthy as
+							possible.</p>
+				<button type ="submit">Apply</button>
+				</div>
+			  </div>
+			</div>
+						
+			</h3>	
+			<h4>
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+			<a href="contactus.html">
+			<i class="material-icons" style="font-size:48px;color:yellow;transform: scaleX(-1);" title="Contact Us">chat</i>
+			</a></h4>
+		</form>
+	</div>
+	
+</body>
+</html>

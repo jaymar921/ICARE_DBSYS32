@@ -14,3 +14,7 @@ function postFunction(){
     ajax.open("POST","/register_account", true);
     ajax.send(formData);
 }
+
+function show_pet_modal(){
+    document.getElementById('modal_pet').style.display = 'block'
+}

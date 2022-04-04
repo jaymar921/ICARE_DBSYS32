@@ -1,0 +1,133 @@
+ul{
+	float: right;
+	list-style-type: none;
+	margin-top: 25px;
+}
+
+ul li{
+	display: inline-block;
+}
+
+ul li a{
+	text-decoration: none;
+	color: #fff;
+	padding: 5px 20px;
+	border: 1px solid transparent;
+	transition: 0.6s ease;
+}
+
+ul li a:hover{
+	background-color: #fff;
+	color: #000;
+}
+
+ul li.active a{
+	background-color: #fff;
+	color: #000;
+}
+
+
+div
+{
+	margin: auto; 
+	margin-right: 2%;
+	margin-top: 2%; 
+	width: 98%; 
+	padding: 10px; 
+}
+
+img
+{
+	width: 15%;
+	margin-left: 43%;
+}
+body
+{
+	background-image: url("3.png");
+	font-family: 'Arial';
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+form
+{
+	padding: 20px;
+	background: rgba(0.1, 0, 0, 0.7);
+	box-shadow: 0 0 30px rgb(0, 0, 0);
+	align-content: center;
+	margin: 3%;
+	animation-name: example;
+    animation-duration: 4s;
+
+}
+h2
+{
+	text-align: center;
+	color: white;
+	padding: 10px;
+}
+input
+{
+	font-size: 16px;
+}
+p
+{
+	font-size: 16px;
+	color: white;
+	margin-left: 2%;
+}
+
+a
+{
+	font-size: 16px;
+	color: white;
+	text-align: center;
+}
+a:hover
+{
+	color: #FFFF00;
+}
+
+button
+{
+	font-size: 16px; 
+	padding: 10px; 
+	background-color: #white; 
+	width: 30%;  
+	border-radius: 10px;
+	margin-left: 35%;
+	cursor: pointer;
+	border-color: yellow;
+	box-shadow: 0 2px #690;
+} 
+button:hover 
+{
+	background-color: #yellow;	
+	text-align: center;
+}
+button:active {
+	background-color: #FFFF00 ;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
+}
+
+.cancel
+{
+	margin-left: 50%;
+}
+
+h3
+{
+	text-align: right;
+	cursor: pointer;
+	animation: shake 1s;
+}
+
+@keyframes shake {
+
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
