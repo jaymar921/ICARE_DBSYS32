@@ -1,5 +1,4 @@
 from database import createAccount, generateAccountID, createEmployee, loginAccount, registerPet, getPets, getServices
-from ProjectFiles.Entity.Entity import Account, LoginCredentials
 from flask import Flask, render_template, request, redirect, url_for, session
 from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData, parsePet
 
@@ -45,6 +44,18 @@ def services(account: str):
             _service_[x['service_code']] = x
         return render_template("services.html", account=account, data=_service_, pets=getPets(account))
     return redirect(url_for("not_found"))
+
+
+@app.route("/inquiry", methods=['POST'])
+def inquiry():
+    data: dict = {
+        'pet_owner': request.form['pet_owner'],
+        'pet_name': request.form['pet_name'],
+        'service_code': request.form['serv_code'],
+        'date': request.form['schedule_date'],
+        'venue': request.form['venue']
+    }
+    pass
 
 
 @app.route("/pets/")
