@@ -1,4 +1,4 @@
-from database import createAccount, generateAccountID, createEmployee, loginAccount, registerPet, getPets
+from database import createAccount, generateAccountID, createEmployee, loginAccount, registerPet, getPets, getServices
 from ProjectFiles.Entity.Entity import Account, LoginCredentials
 from flask import Flask, render_template, request, redirect, url_for, session
 from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData, parsePet
@@ -39,7 +39,11 @@ def services_invalid():
 @app.route('/services/<account>')
 def services(account: str):
     if account == session['username']:
-        return render_template("services.html", account=account)
+        data = getServices()
+        _service_: dict = {}
+        for x in data:
+            _service_[x['service_code']] = x
+        return render_template("services.html", account=account, data=_service_, pets=getPets(account))
     return redirect(url_for("not_found"))
 
 
@@ -52,7 +56,6 @@ def pets_invalid():
 def pets(account):
     if account == session['username']:
         data = getPets(account)
-        print(data)
         return render_template("Pets.html", account=account, pets=data)
     return redirect(url_for("login"))
 

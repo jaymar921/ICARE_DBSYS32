@@ -122,3 +122,41 @@ select * from transaction;
 select * from activity_record;
 select * from employee_activity;
 ```
+## Service
+```sql
+insert into service(service_code, description, price) values ('VX','Pet Vaccination',1200),('DM','Deworming',1000),('TL','Tubal Ligation',800),('AF','Anti Fleas',400),('VA','Vet Assistance',650);
+```
+<table>
+    <tr>
+        <td>CODE</td>    
+        <td>DESCRIPTION</td>   
+        <td>PRICE</td>    
+    </tr>
+    <tr>
+        <td>AF</td>
+        <td>Anti Fleas</td>
+        <td>400</td>
+    </tr>
+    <tr>
+        <td>DM</td>
+        <td>Deworming</td>
+        <td>1000</td>
+    </tr>
+    <tr>
+        <td>TL</td>
+        <td>Tubal Ligation</td>
+        <td>800</td>
+    </tr>
+    <tr>
+        <td>VA</td>
+        <td>Vet Assistance</td>
+        <td>650</td>
+    </tr>
+    <tr>
+        <td>VX</td>
+        <td>Pet Vaccination</td>
+        <td>1200</td>
+    </tr>
+</table>
+
+

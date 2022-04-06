@@ -59,3 +59,82 @@ table tr td{
 	font-size: 1.5em;
 }
 
+.modal{
+    position: absolute;
+    top: 20%;
+    background: rgba(165,42,42,0.65);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgb(255, 0, 244);
+    align-content: center;
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 1000ms ease;
+}
+
+.modal-form{
+    position: relative;
+    border-radius: 20px;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.modal-inner-form{
+    display:flex;
+}
+.modal-form-block{
+    width: 100%;
+    display: inline-block;
+}
+
+.modal-form-block p{
+    padding: 10px 0 0 0;
+    margin: 0;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.modal-form-block p select,option{
+    padding: 0;
+    margin: 0;
+    font-size: 1.2em;
+    width:100%;
+}
+
+.modal_input{
+    font-size: 1.2em;
+    transition: all 500ms ease;
+    width: 100%
+}
+
+.modal_input:hover{
+    font-size: 1.2em;
+    color: gray;
+}
+
+.modal_btn{
+    cursor: pointer;
+    background: rgba(165,72,72,0.90);
+    width: 70%;
+    border-radius: 10px;
+    border: 2px transparent;
+    width:50%;
+    font-size: 1.2em;
+    padding: 0;
+    margin: 0;
+    transition: all 1000ms ease;
+}
+
+.modal_btn:hover{
+    cursor: pointer;
+    background: rgba(165,92,92,0.95);
+    width: 75%
+    border: 2px transparent;
+    width:55%;
+    color: white;
+    box-shadow: 0 0 30px rgb(255, 0, 244);
+}
+.t_center{
+    text-align: center;
+}

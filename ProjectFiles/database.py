@@ -179,7 +179,7 @@ def registerPet(pet: Entity.Pet):
     cursor.close()
 
 
-def getPets(username: str) -> dict:
+def getPets(username: str) -> list:
     sql: str = f"select `name`,`age`,`gender`,`breed`,`specie`,`blood_type`,`weight`," \
                f"`registry_date`,`status` from `pet` " \
                f"p, `login_credentials` l where l.username = '{username}' and p.owner_id = l.acc_id; "
@@ -187,4 +187,14 @@ def getPets(username: str) -> dict:
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
+    return data
+
+
+def getServices() -> list:
+    sql: str = "select * from service"
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    cursor.close()
+    print(data)
     return data

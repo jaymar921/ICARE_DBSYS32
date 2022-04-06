@@ -1,6 +1,7 @@
 <head>
-	<title>SERVICES</title>
+	<title>iCare Services</title>
 	<link rel="stylesheet" href="{{url_for('static',filename='services.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='design.css')}}">
 </head>
 <body>
 	<ul>
@@ -12,28 +13,26 @@
 			</ul>
 	<div>
 	
-		<form method = "GET" action = "">
+		<img src ="{{url_for('static',filename='images/1.png')}}">
 
-			<img src ="{{url_for('static',filename='images/1.png')}}">
-			
 			<h2>Our Services</h2>
-			
-			<h3>			
+
+			<h3>
 			<div class="row">
 			  <div class="column">
 				<div class="card">
 				  <h3>Pet Vaccination</h3>
 				  <img src ="{{url_for('static',filename='images/vaccine_pet.png')}}" width="100" height="100">
-				  <p>Vecciniations prolect your pet
-						 Irom several highly
-					contagious discases such as
-					canine distemper, parvovinus
+				  <p>Vaccinations protect your pet
+						 from several highly
+					contagious diseases such as
+					canine distemper, parvenus
 					infection and respiratory tract
 					 infections. It also protects
 					against transmissible diseases
 					Such as rabies that also pose
 						  a risk to humans.</p>
-				<button type ="submit">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='VX';document.getElementById('serv_price').value ={{data['VX']['price']}};document.getElementById('serv_description').value ='{{data['VX']['description']}}';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 
@@ -42,32 +41,32 @@
 				  <h3>Deworming</h3>
 				  <img src ="{{url_for('static',filename='images/deworm_pet.png')}}">
 				  <p>Deworming is an important
-					preventalive care regime for
-					roducing pansates (intemal
+					preventative care regime for
+					producing pansates (intemal
 					and external) and improving
 					your pet's health. It is also
 					important to help to prevent
 					transmission of parasites to
 					you and your human family
 						   members!</p>
-				<button type ="submit">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='DM';document.getElementById('serv_price').value ={{data['DM']['price']}};document.getElementById('serv_description').value ='{{data['DM']['description']}}';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
 				<div class="card">
 				  <h3>Tubal Ligation</h3>
 				  <img src ="{{url_for('static',filename='images/tubal_ligation_pet.png')}}">
-				  <p>Tubal igalion permanently
-					preverts pregriancy, so you
+				  <p>Tubal ligation permanently
+					prevents pregnancy, so you
 					no longer need any type of
-					bırth control. However, it does
+					birth control. However, it does
 					not protect against sexually
-					transmitted infecions. Tubal
+					transmitted infections. Tubal
 					ligation may ako decrease
-					your rsk of ovaran cancer,
+					your rsk of ovarian cancer,
 					 especially if the fallopian
 					   tubes are removed</p>
-				<button type ="submit">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='TL';document.getElementById('serv_price').value ={{data['TL']['price']}};document.getElementById('serv_description').value ='{{data['TL']['description']}}';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
@@ -75,16 +74,16 @@
 				  <h3>Anti Fleas</h3>
 				  <img src ="{{url_for('static',filename='images/anti_fleas_pet.png')}}">
 				  <p>Prevent sickness and disease:
-					   The primary reason to 
-					 protect your cats and dogs 
+					   The primary reason to
+					 protect your cats and dogs
 					   from fleas and ticks is
-					 to prevent them from getting 
-					   sick from the diseases 
-					  transimitted by these
-					 pests! To make your pet 
+					 to prevent them from getting
+					   sick from the diseases
+					  transmitted by these
+					 pests! To make your pet
 					 happy and healthy.</p>
-				<br>			   
-				<button type ="submit">Apply</button>
+				<br>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='AF';document.getElementById('serv_price').value ={{data['AF']['price']}};document.getElementById('serv_description').value ='{{data['AF']['description']}}';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
@@ -101,19 +100,82 @@
 					order to make sure he or she
 					is as strong and as healthy as
 							possible.</p>
-				<button type ="submit">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='VA';document.getElementById('serv_price').value ={{data['VA']['price']}};document.getElementById('serv_description').value ='{{data['VA']['description']}}';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			</div>
-						
-			</h3>	
+
+			</h3>
 			<h4>
 			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 			<a href="contactus.html">
 			<i class="material-icons" style="font-size:48px;color:yellow;transform: scaleX(-1);" title="Contact Us">chat</i>
 			</a></h4>
+	</div>
+
+	<div id="serv_mod" class="modal" style="display:block;opacity:0">
+		<form class="modal-form" method="POST" action="/inquiry">
+			<h2 class="t_center">Pet Servicing</h2>
+			<div class="modal-inner-form">
+				<div class="modal-form-block">
+					<p>Service Code:</p>
+					<p><input id="serv_code" class="t_center modal_input" type="text" name="service_code" value="--" readonly></p>
+				</div>
+				<div class="modal-form-block">
+					<p>Service Price:</p>
+					<p><input id="serv_price" class="t_center modal_input" type="text" name="service_price" value="--" readonly></p>
+				</div>
+			</div>
+			<div class="modal-inner-form">
+				<div class="modal-form-block">
+					<p>Service Description:</p>
+					<p><input id="serv_description" class="t_center modal_input" type="text" name="service_description" value="--" readonly></p>
+				</div>
+				<div class="modal-form-block">
+					<p>Pet Owner:</p>
+					<p>
+						<input type="text" class="t_center modal_input" name="pet_owner" value="{{account}}" readonly>
+					</p>
+				</div>
+			</div>
+			<div class="modal-inner-form">
+				<div class="modal-form-block">
+					<p>Schedule Date:</p>
+					<p><input type="date" class="t_center modal_input" name="schedule_date" required></p>
+				</div>
+				<div class="modal-form-block">
+					<p>Pet Information:</p>
+					<p>
+						<select name="pet_name" class="t_center" required>
+							{% for item in pets %}
+								<option value="{{item['name']}}">{{item['name']}} - {{item['specie']}}</option>
+							{% endfor %}
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="modal-inner-form">
+				<div class="modal-form-block">
+					<p>Venue:</p>
+					<p>
+						<select name="venue" class="t_center" required>
+							<option value="Talisay City Hall">Talisay City Hall</option>
+							<option value="Cebu City Hall">Cebu City Hall</option>
+						</select>
+					</p>
+				</div>
+			</div>
+			<div class="modal-inner-form">
+				<div class="modal-form-block">
+					<p><input class="modal_btn" type="button" onclick="close_modal();" value="Cancel"></p>
+				</div>
+				<div class="modal-form-block">
+					<p><input class="modal_btn" type="submit" value="Submit"></p>
+				</div>
+			</div>
+
 		</form>
 	</div>
-	
 </body>
+<script type="text/javascript" src="{{url_for('static',filename='script.js')}}"></script>
 </html>
