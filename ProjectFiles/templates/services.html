@@ -146,9 +146,9 @@
 				<div class="modal-form-block">
 					<p>Pet Information:</p>
 					<p>
-						<select name="pet_name" class="t_center" required>
+						<select name="pet_id" class="t_center" required>
 							{% for item in pets %}
-								<option value="{{item['name']}}">{{item['name']}} - {{item['specie']}}</option>
+								<option value="{{item['pet_id']}}">{{item['name']}} - {{item['specie']}}</option>
 							{% endfor %}
 						</select>
 					</p>

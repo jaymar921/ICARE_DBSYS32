@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body{
+		font-family: Arial, Helvetica, sans-serif; color: white;
+		content:"";
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("{{url_for('static',filename='images/Background2.jpg')}}");
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: cover;
+		-webkit-filter:;
+		-moz-filter: blur(10px);
+			
+	}
+
+	.column {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 90%;
+			height: 50%;
+			padding: 50px 40px;
+			background: rgba(0,0,0,0.8);
+			box-shadow: 0 0 40px rgb(0, 0, 0);
+			overflow: scroll;
+	}
+
+	ul{
+		float: right;
+		list-style-type: none;
+		margin-top: 10px;
+		margin-right: 350px;
+	}
+
+	ul li{
+		display: inline-block;
+	}
+
+	ul li a{
+		text-decoration: none;
+		color: #fff;
+		padding: 5px 20px;
+		border: 1px solid transparent;
+		transition: 0.6s ease;
+	}
+
+	ul li a:hover{
+		background-color: #fff;
+		color: #000;
+	}
+
+	ul li.active a{
+		background-color: #fff;
+		color: #000;
+	}
+
+	h2{
+		text-align: center;
+		color: #fff;
+		font-size: 30px;
+		margin-top: -90px;
+	}
+
+	.label{
+		position: absolute;
+		top: 31%;
+		left: 24%;
+		font-size: 20px;
+	}
+
+	.lbl{
+		color: #fff;
+		font-weight: bolder;
+	}
+
+	.column{
+		position: absolute;
+	}
+
+	.col{
+		text-decoration: none;
+		color: #fff;
+		padding: 5px 33px;
+	}
+
+</style>
+<title>Clients</title>
+</head>
+<body>
+	<div class="whole">
+		<form action="" method="post";>
+
+			<div class="imgcontainer">
+				<img src="{{url_for('static',filename='images/1.png')}}" alt="Image" height="95" width="95" hspace="30" vspace="30">
+				<h2>Hello Admin!</h2>
+			</div>
+				<ul>
+					<li><a href="/pending_services">Services</a></li>
+					<li class="active"><a href="/accounts_admin">Clients</a></li>
+					<li><a href="/transactions_admin">Transactions</a></li>
+					<li><a href="/logout">Log Out</a></li>
+				</ul>
+
+			<div class="column">
+				<h1>Clients</h1>
+				<table>
+					<tr>
+						<th class="col">UUID</th>
+						<th class="col">LASTNAME</th>
+						<th class="col">FIRSTNAME</th>
+						<th class="col">BIRTHDATE</th>
+						<th class="col">HOUSE NO</th>
+						<th class="col">STREET</th>
+						<th class="col">BARANGAY</th>
+						<th class="col">CITY</th>
+						<th class="col">ZIP</th>
+						<th class="col">REGISTRY DATE</th>
+						<th class="col">ADMIN</th>
+					</tr>
+						{% for list in clients %}
+							<tr>
+								{% for key, value in list.items() %}
+									<td class="col">{{value}}</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+				</table>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

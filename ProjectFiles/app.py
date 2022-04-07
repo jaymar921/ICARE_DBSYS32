@@ -1,4 +1,6 @@
 from database import createAccount, generateAccountID, createEmployee, loginAccount, registerPet, getPets, getServices
+from database import scheduleService, getPendingSchedules, getAdminPendingSchedules, updateAdminPendingSchedules
+from database import getAdminApprovedDeclinedSchedules, addTransactions, getClients, getTransactions
 from flask import Flask, render_template, request, redirect, url_for, session
 from utility import parseNewAccount, parseNewEmployeeAccount, isEmail, hashData, parsePet
 
@@ -9,7 +11,7 @@ uuid_data: dict = {}
 
 @app.route("/")
 def homepage():
-    if "username" in session:
+    if "username" in session and session['username'] in uuid_data:
         return render_template("homepage.html", account=session['username'], login="none", logout="block")
     return render_template("homepage.html", login="block", logout="none")
 
@@ -22,12 +24,62 @@ def login():
 @app.route("/login_account", methods=['POST'])
 def login_account():
     data: list = loginAccount(request.form['email'], hashData(request.form['psw']), isEmail(request.form['email']))
-    if len(data) == 2:
+    if len(data) >= 2:
         session['username'] = data[1].username
         uuid_data[data[1].username] = data[1].acc_id
         return redirect(url_for("homepage"))
     else:
         return render_template("login.html", log_remark="Invalid Credentials")
+
+
+@app.route("/admin_login")
+def login_admin():
+    return render_template("admin.html")
+
+
+@app.route("/administration", methods=['POST'])
+def administration_login():
+    data: list = loginAccount(request.form['email'], hashData(request.form['psw']), isEmail(request.form['email']))
+    if len(data) == 3:
+        session['username'] = data[1].username
+        uuid_data[data[1].username] = data[1].acc_id
+        return redirect(url_for("admin_pending_services"))
+    else:
+        return render_template("login.html", log_remark="Invalid Credentials")
+
+
+@app.route("/pending_services")
+def admin_pending_services():
+    data: dict = getAdminPendingSchedules()
+    return render_template("adminPendingServices.html", services=data, services_1=getAdminApprovedDeclinedSchedules())
+
+
+@app.route("/update_pending_service", methods=['POST'])
+def update_inquiry():
+    data: dict = {
+        "record_id": request.form['record_id'],
+        "pet_id": request.form['pet_id'],
+        "pet_owner": request.form['owner_id'],
+        "service": request.form['service'],
+        "date": request.form['date'],
+        "venue": request.form['venue'],
+        "remark": request.form['remark']
+    }
+    if data['remark'] == 'approved' or data['remark'] == 'declined':
+        updateAdminPendingSchedules(data)
+    elif data['remark'] == 'paid' or data['remark'] == 'cancelled' or data['remark'] == 'cancelled':
+        addTransactions(data)
+    return redirect(url_for("admin_pending_services"))
+
+
+@app.route("/accounts_admin")
+def accountsList():
+    return render_template("adminClients.html", clients=getClients())
+
+
+@app.route("/transactions_admin")
+def transactList():
+    return render_template("adminTransaction.html", transact=getTransactions())
 
 
 @app.route("/services/")
@@ -49,13 +101,14 @@ def services(account: str):
 @app.route("/inquiry", methods=['POST'])
 def inquiry():
     data: dict = {
-        'pet_owner': request.form['pet_owner'],
-        'pet_name': request.form['pet_name'],
-        'service_code': request.form['serv_code'],
+        'pet_owner': uuid_data[request.form['pet_owner']],
+        'pet_id': request.form['pet_id'],
+        'service_code': request.form['service_code'],
         'date': request.form['schedule_date'],
         'venue': request.form['venue']
     }
-    pass
+    scheduleService(data)
+    return render_template("InquirySent.html", account=request.form['pet_owner'])
 
 
 @app.route("/pets/")
@@ -67,6 +120,11 @@ def pets_invalid():
 def pets(account):
     if account == session['username']:
         data = getPets(account)
+        inquiry = getPendingSchedules()
+        for x in data:
+            for y in inquiry:
+                if x['pet_id'] == y['pet_id']:
+                    x['inquiry'] = x['pet_id']
         return render_template("Pets.html", account=account, pets=data)
     return redirect(url_for("login"))
 
@@ -79,6 +137,20 @@ def register():
 @app.route("/admin_register")
 def admin_register():
     return render_template("registration_admin.html")
+
+
+@app.route("/inquiry/<account>/<pet_id>")
+def inquiries(account: str, pet_id: int):
+    pet_data: list = []
+    server_data = getPendingSchedules()
+    for data in server_data:
+        if int(data['pet_id']) == int(pet_id):
+            for s_c in getServices():
+                if data['service_code'] == s_c['service_code']:
+                    data['service_code'] = s_c['description']
+                    pet_data.append(data)
+                    print(data)
+    return render_template('PetInquiry.html', account=account, pet_data=pet_data)
 
 
 @app.route("/register_account_employee", methods=['POST'])

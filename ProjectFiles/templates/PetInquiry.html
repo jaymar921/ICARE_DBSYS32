@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{account}}'s pet inquiry</title>
+</head>
+<style type="text/css">
+	body{
+		background-image: url("{{url_for('static',filename='images/2.png')}}");
+		background-repeat: no-repeat;
+  		background-size: cover;
+	}
+	.box{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%,-50%);
+		background: rgba(255, 255, 255, 0.7);
+		border-radius: 20px;
+		text-align: center;
+		padding: 50px;
+		width: 60%;
+	}
+
+	.box table{
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.box table tr th{
+		padding: 5px;
+		text-align: center;
+	}
+</style>
+<body>
+	<div class="box">
+		<table>
+			<tr>
+				<th>RECORD ID</th>
+				<th>PET ID</th>
+				<th>SERVICE</th>
+				<th>SCHEDULE DATE</th>
+				<th>VENUE</th>
+				<th>STATUS</th>
+				<th>REMARKS</th>
+			</tr>
+			{% for list_obj in pet_data %}
+				<tr>
+					{% for key, value in list_obj.items() %}
+						<th>{{value}}</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+		<a href="/pets/{{account}}">Go back</a>
+	</div>
+</body>
+</html>

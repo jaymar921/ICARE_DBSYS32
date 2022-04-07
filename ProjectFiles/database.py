@@ -75,6 +75,32 @@ def generateAccountID() -> int:
     return data['login_id'] + 1
 
 
+def generateRecordID() -> int:
+    try:
+        sql: str = f"select * from `service_records`"
+        cursor = database.cursor(dictionary=True)
+        cursor.execute(sql)
+        data: list = cursor.fetchall()
+        data = data[len(data) - 1]
+        cursor.close()
+        return data['record_id'] + 1
+    except Exception:
+        return 1
+
+
+def generateTransactionID() -> int:
+    try:
+        sql: str = f"select * from `transaction`"
+        cursor = database.cursor(dictionary=True)
+        cursor.execute(sql)
+        data: list = cursor.fetchall()
+        data = data[len(data) - 1]
+        cursor.close()
+        return data['transact_id'] + 1
+    except Exception:
+        return 1
+
+
 def createEmployee(account: Entity.Employee, login_cred: Entity.LoginCredentials):
     try:
         acc_id: str = account.acc_id
@@ -153,6 +179,27 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
             data[0]["zip"],
             data[0]["registry_date"]
         )
+        sql: str = f"select * from `employee` where acc_id='{loginCred.acc_id}'"
+        cursor = database.cursor(dictionary=True)
+        cursor.execute(sql)
+        data: dict = cursor.fetchall()
+        cursor.close()
+        if len(data) != 0:
+            employee: Entity.Employee = Entity.Employee(
+                account.acc_id,
+                account.lastname,
+                account.firstname,
+                account.birthdate,
+                account.house_no,
+                account.street,
+                account.barangay,
+                account.city,
+                account.zip,
+                account.registry_date,
+                data[0]['emp_id'],
+                data[0]['position'],
+            )
+            return [account, loginCred, employee]
         return [account, loginCred]
     return []
 
@@ -181,7 +228,7 @@ def registerPet(pet: Entity.Pet):
 
 def getPets(username: str) -> list:
     sql: str = f"select `name`,`age`,`gender`,`breed`,`specie`,`blood_type`,`weight`," \
-               f"`registry_date`,`status` from `pet` " \
+               f"`registry_date`,`status`,`pet_id` from `pet` " \
                f"p, `login_credentials` l where l.username = '{username}' and p.owner_id = l.acc_id; "
     cursor = database.cursor(dictionary=True)
     cursor.execute(sql)
@@ -197,4 +244,89 @@ def getServices() -> list:
     data = cursor.fetchall()
     cursor.close()
     print(data)
+    return data
+
+
+def scheduleService(data: dict):
+    sql: str = f"insert into `service_records` (`record_id`,`pet_id`,`service_code`,`date`,`venue`,`status`,`remarks`) values ('{generateRecordID()}','{data['pet_id']}','{data['service_code']}','{data['date']}','{data['venue']}','PENDING','');"
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+
+
+def getPendingSchedules() -> list:
+    sql: str = "select * from `service_records`;"
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data: list = cursor.fetchall()
+    cursor.close()
+    return data
+
+
+def getAdminPendingSchedules() -> list:
+    sql: str = "select record_id, p.pet_id, owner_id, description as service, date, venue, s.status from service_records s, pet p, service where p.pet_id = s.pet_id and s.service_code = service.service_code and s.status = 'PENDING';"
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data: list = cursor.fetchall()
+    cursor.close()
+    return data
+
+
+def getAdminApprovedDeclinedSchedules() -> list:
+    sql: str = "select record_id, p.pet_id, owner_id, description as service, date, venue, s.status from service_records s, pet p, service where p.pet_id = s.pet_id and s.service_code = service.service_code and s.status = 'approved' or s.status = 'declined';"
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data: list = cursor.fetchall()
+    cursor.close()
+    return data
+
+
+def updateAdminPendingSchedules(data: dict):
+    sql: str = f"update service_records set status='{data['remark']}', remarks='CHECKED' where record_id='{data['record_id']}'; "
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+
+
+def addTransactions(data: dict):
+    transact_id: int = generateTransactionID()
+    sql: str = f"update service_records set status='{data['remark']}', remarks='{transact_id}' where record_id='{data['record_id']}'; "
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+    for service in getServices():
+        if str(service['description']) == str(data['service']):
+            print(service['description'])
+            print(data['service'])
+            data['price'] = service['price']
+    sql: str = f"insert into `transaction` (`transact_id`,`acc_id`,`amount`,`status`) values ({transact_id},'{data['pet_owner']}','{data['price']}','{data['remark']}');"
+    cursor = database.cursor()
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+
+
+def getClients() -> list:
+    sql: str = "select a.acc_id as UUID, lastname, firstname, birthdate, house_no, street, barangay, city, zip, " \
+               "registry_date, case when a.acc_id = e.acc_id then 'YES' else '' end as ADMIN from account a, " \
+               "employee e; "
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    cursor.close()
+    return data
+
+
+def getTransactions() -> list:
+    sql: str = "select transact_id, a.lastname, a.firstname, p.name, sr.description , amount, t.status from " \
+               "transaction t, account a, pet p, service_records s, service sr where t.acc_id = a.acc_id and s.pet_id " \
+               "= p.pet_id and s.remarks = t.transact_id and sr.service_code = s.service_code order by t.transact_id " \
+               "asc; "
+    cursor = database.cursor(dictionary=True)
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    cursor.close()
     return data

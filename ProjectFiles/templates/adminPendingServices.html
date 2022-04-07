@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body{
+		font-family: Arial, Helvetica, sans-serif; color: white;
+		content:"";
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("{{url_for('static',filename='images/Background.jpg')}}");
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: cover;
+		-webkit-filter:;
+		-moz-filter: blur(10px);
+
+	}
+
+	.column {
+		position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 80%;
+			height: 150px;
+			padding: 50px 40px;
+			background: rgba(0,0,0,0.8);
+			box-shadow: 0 0 40px rgb(0, 0, 0);
+			overflow: scroll;
+	}
+
+	.column-bottom {
+		position: absolute;
+			top: 80%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 80%;
+			height: 150px;
+			padding: 50px 40px;
+			background: rgba(0,0,0,0.8);
+			box-shadow: 0 0 40px rgb(0, 0, 0);
+			overflow: scroll;
+	}
+
+	ul{
+		float: right;
+		list-style-type: none;
+		margin-top: 10px;
+		margin-right: 350px;
+	}
+
+	ul li{
+		display: inline-block;
+	}
+
+	ul li a{
+		text-decoration: none;
+		color: #fff;
+		padding: 5px 20px;
+		border: 1px solid transparent;
+		transition: 0.6s ease;
+	}
+
+	ul li a:hover{
+		background-color: #fff;
+		color: #000;
+	}
+
+	ul li.active a{
+		background-color: #fff;
+		color: #000;
+	}
+
+	h2{
+		text-align: center;
+		color: #fff;
+		font-size: 30px;
+		margin-top: -90px;
+	}
+
+	.label{
+		position: absolute;
+		top: 31%;
+		left: 24%;
+		font-size: 20px;
+	}
+
+	.lbl{
+		color: #fff;
+		font-weight: bolder;
+	}
+
+	.column{
+		position: absolute;
+	}
+
+	.col{
+		text-decoration: none;
+		color: #fff;
+		padding: 5px 33px;
+	}
+
+	.m-button{
+		background: rgba(255,255,255,0.7);
+		cursor: pointer;
+		transition: all 500ms ease;
+	}
+
+	.m-button:hover{
+		background: rgba(255,255,255,1);
+		color: red;
+	}
+
+	.modal{
+		position: absolute;
+		background: rgba(255,255,255,0.9);
+		// border: 1px solid red;
+		border-radius: 15px;
+		text-align: center;
+		color: black;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		width: 70%;
+	}
+
+	.modal-content{
+		position: relative;
+		width: 100%;
+		text-align: center;
+		background: rgba(0,0,0,0);
+	}
+
+	.modal-block{
+		position: relative;
+		display: flex;
+		width: 90%;
+		text-align: center;
+		align-content: center;
+		//border: 1px solid green;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.modal-block div{
+		position: relative;
+		display: flex;
+		align-content: center;
+		text-align: center;
+		margin: 0;
+		width: 100%;
+		padding: auto;
+		//border: 1px solid blue;
+		margin: 5px;
+		background: rgb(122,122,255);
+	}
+
+	.modal-block div input, p, select {
+		width: 100%;
+		font-size: 1.2em;
+		text-align: center;
+	}
+	.modal-block div input, select{
+		color: black;
+		//border: 1px solid gold;
+		background: rgb(122,222,255);
+	}
+	.modal-block div input{
+		color: gray;
+	}
+
+
+</style>
+<title>Pending Services</title>
+</head>
+<body>
+	<div class="whole">
+		<form action="/update_pending_service" method="post">
+
+			<div class="imgcontainer">
+				<img src="{{url_for('static',filename='images/1.png')}}" alt="Image" height="95" width="95" hspace="30" vspace="30">
+				<h2>Hello Admin!</h2>
+			</div>
+				<ul>
+					<li class="active"><a href="/">Services</a></li>
+					<li><a href="/accounts_admin">Clients</a></li>
+					<li><a href="/transactions_admin">Transactions</a></li>
+					<li><a href="/logout">Log Out</a></li>
+				</ul>
+			<div class="label">
+				<a href="#" class="lbl">Services</a>
+			</div>
+
+			<div class="column">
+				<table>
+					<tr>
+						<th class="col">ID</th>
+						<th class="col">Pet ID</th>
+						<th class="col">Owner ID</th>
+						<th class="col">Service</th>
+						<th class="col">Schedule Date</th>
+						<th class="col">Venue</th>
+						<th class="col">Status</th>
+						<th class="col">Action</th>
+					</tr>
+						{% for list in services %}
+							<tr>
+								{% for key, value in list.items() %}
+									<td class="col">{{value}}</td>
+								{% endfor %}
+								<td class="col"><a class="m-button" onclick="admin_inquiry_modal('{{list['record_id']}}','{{list['pet_id']}}','{{list['owner_id']}}','{{list['service']}}','{{list['date']}}','{{list['venue']}}');">✎</a></td>
+							</tr>
+						{% endfor %}
+				</table>
+			</div>
+
+			<div class="column-bottom">
+				<h1>Approved/Declined</h1>
+					<table>
+						<tr>
+							<th class="col">ID</th>
+							<th class="col">Pet ID</th>
+							<th class="col">Owner ID</th>
+							<th class="col">Service</th>
+							<th class="col">Schedule Date</th>
+							<th class="col">Venue</th>
+							<th class="col">Status</th>
+							<th class="col">Action</th>
+						</tr>
+							{% for list in services_1 %}
+								<tr>
+									{% for key, value in list.items() %}
+										<td class="col">{{value}}</td>
+									{% endfor %}
+									<td class="col"><a class="m-button" onclick="admin_transact_modal('{{list['record_id']}}','{{list['pet_id']}}','{{list['owner_id']}}','{{list['service']}}','{{list['date']}}','{{list['venue']}}');">✎</a></td>
+								</tr>
+							{% endfor %}
+					</table>
+				</div>
+
+
+
+
+			<div id="modal" class="modal" style="display:none;">
+				<div class="modal-content">
+					<h1>Inquiry</h1>
+					<form method="post" action="/update_pending_service">
+						<div class="modal-block">
+							<div>
+								<p>ID</p>
+							</div>
+							<div>
+								<input id="record_id" name="record_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Pet ID</p>
+							</div>
+							<div>
+								<input id="pet_id" name="pet_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Schedule Date</p>
+							</div>
+							<div>
+								<input id="date" name="date" type="text" readonly>
+							</div>
+							<div>
+								<p>Service</p>
+							</div>
+							<div>
+								<input id="service" name="service" type="text" readonly>
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<p>Owner ID</p>
+							</div>
+							<div>
+								<input id="owner_id" name="owner_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Venue</p>
+							</div>
+							<div>
+								<input id="venue" name="venue" type="text" readonly>
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<select id="remark" name="remark" required>
+									<option value="approved">Approve</option>
+									<option value="declined">Decline</option>
+								</select>
+							</div>
+							<div>
+								<input style="color: black;" type="submit" name="submit" value="submit">
+							</div>
+							<div>
+								<input style="color: black;" type="button" name="cancel" value="cancel" onclick="admin_inquiry_modal_close()">
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<p style="color: rgb(139, 0, 0);">Note: You can only approve/disapprove pending inquiries</p>
+							</div>
+						</div>
+						<br>
+					</form>
+				</div>
+			</div>
+			<div id="transact_modal" class="modal" style="display:none;">
+				<div class="modal-content">
+					<h1>Inquiry</h1>
+					<form method="post" action="/update_pending_service">
+						<div class="modal-block">
+							<div>
+								<p>ID</p>
+							</div>
+							<div>
+								<input id="rid" name="record_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Pet ID</p>
+							</div>
+							<div>
+								<input id="pid" name="pet_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Schedule Date</p>
+							</div>
+							<div>
+								<input id="date_1" name="date" type="text" readonly>
+							</div>
+							<div>
+								<p>Service</p>
+							</div>
+							<div>
+								<input id="service_1" name="service" type="text" readonly>
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<p>Owner ID</p>
+							</div>
+							<div>
+								<input id="owner_id_1" name="owner_id" type="text" readonly>
+							</div>
+							<div>
+								<p>Venue</p>
+							</div>
+							<div>
+								<input id="venue_1" name="venue" type="text" readonly>
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<select id="remark_1" name="remark" required>
+									<option value="paid">Paid</option>
+									<option value="cancelled">Cancelled</option>
+									<option value="removed">Remove</option>
+								</select>
+							</div>
+							<div>
+								<input style="color: black;" type="submit" name="submit" value="submit">
+							</div>
+							<div>
+								<input style="color: black;" type="button" name="cancel" value="cancel" onclick="admin_transact_modal_close()">
+							</div>
+						</div>
+						<div class="modal-block">
+							<div>
+								<p style="color: rgb(139, 0, 0);">Note: You can only select Paid/Cancelled/Remove from inquiries</p>
+							</div>
+						</div>
+						<br>
+					</form>
+				</div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript" src="{{url_for('static',filename='script.js')}}"></script>
+</body>
+
+</html>

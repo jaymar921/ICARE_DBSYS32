@@ -165,11 +165,16 @@
 					<th>Weight(KG)</th>
 					<th>Registry Date</th>
 					<th>Status</th>
+					<th>Inquiries</th>
 				</tr>
 				{% for x in pets %}
 				<tr>
-					{% for key, value in x.items() %}
-						<td>{{value}}</td>
+					{% for key, value in x.items() if key != 'pet_id' %}
+						{% if key == 'inquiry'%}
+							<td><a href="/inquiry/{{account}}/{{value}}">✉</a></td>
+						{% else %}
+							<td>{{value}}</td>
+						{% endif %}
 					{% endfor %}
 				</tr>
 				{% endfor %}
