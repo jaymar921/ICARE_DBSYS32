@@ -1,3 +1,6 @@
+import threading
+import time
+
 from mysql import connector
 import utility
 from ProjectFiles.Entity.Entity import LoginCredentials, Account
@@ -10,6 +13,7 @@ database = connector.connect(
     password=utility.get_configuration()["password"],
     database=utility.get_configuration()["database"]
 )
+
 
 
 def createAccount(account: Entity.Account, login_credential: Entity.LoginCredentials):
@@ -299,8 +303,6 @@ def addTransactions(data: dict):
     cursor.close()
     for service in getServices():
         if str(service['description']) == str(data['service']):
-            print(service['description'])
-            print(data['service'])
             data['price'] = service['price']
     sql: str = f"insert into `transaction` (`transact_id`,`acc_id`,`amount`,`status`) values ({transact_id},'{data['pet_owner']}','{data['price']}','{data['remark']}');"
     cursor = database.cursor()
