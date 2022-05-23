@@ -15,7 +15,6 @@ database = connector.connect(
 )
 
 
-
 def createAccount(account: Entity.Account, login_credential: Entity.LoginCredentials):
     try:
         acc_id: str = account.acc_id
@@ -252,7 +251,8 @@ def getServices() -> list:
 
 
 def scheduleService(data: dict):
-    sql: str = f"insert into `service_records` (`record_id`,`pet_id`,`service_code`,`date`,`venue`,`status`,`remarks`) values ('{generateRecordID()}','{data['pet_id']}','{data['service_code']}','{data['date']}','{data['venue']}','PENDING','');"
+    print(data['vax_type'])
+    sql: str = f"insert into `service_records` (`record_id`,`pet_id`,`service_code`,`date`,`venue`,`status`,`remarks`) values ('{generateRecordID()}','{data['pet_id']}','{data['service_code']}','{data['date']}','{data['venue']}','PENDING','{data['vax_type']}');"
     cursor = database.cursor()
     cursor.execute(sql)
     database.commit()
@@ -277,8 +277,17 @@ def getAdminPendingSchedules() -> list:
     return data
 
 
+def employeeActivity(e_id: str, log_in: str, log_out: str, today: str, interaction: str):
+    print([e_id, log_in, log_out, today, interaction])
+    cursor = database.cursor()
+    sql: str = f"insert into employee_activity values ('NULL','{e_id}','{log_in}','{log_out}','{today}','{interaction}');"
+    cursor.execute(sql)
+    database.commit()
+    cursor.close()
+
+
 def getAdminApprovedDeclinedSchedules() -> list:
-    sql: str = "select record_id, p.pet_id, owner_id, description as service, date, venue, s.status from service_records s, pet p, service where p.pet_id = s.pet_id and s.service_code = service.service_code and s.status = 'approved' or s.status = 'declined';"
+    sql: str = "select sr.record_id, sr.pet_id, p.owner_id, s.description as service, sr.date, sr.venue, sr.status from service_records sr, pet p,service s where p.pet_id = sr.pet_id and s.service_code = sr.service_code and sr.remarks='CHECKED';"
     cursor = database.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
@@ -323,10 +332,7 @@ def getClients() -> list:
 
 
 def getTransactions() -> list:
-    sql: str = "select transact_id, a.lastname, a.firstname, p.name, sr.description , amount, t.status from " \
-               "transaction t, account a, pet p, service_records s, service sr where t.acc_id = a.acc_id and s.pet_id " \
-               "= p.pet_id and s.remarks = t.transact_id and sr.service_code = s.service_code order by t.transact_id " \
-               "asc; "
+    sql: str = "select t.transact_id,a.lastname,a.firstname,p.name,s.description,t.amount,t.status from transaction t, account a, pet p, service s, service_records sr where t.acc_id = a.acc_id and p.owner_id = t.acc_id and sr.service_code = s.service_code and p.pet_id = sr.pet_id and sr.remarks = t.transact_id order by t.transact_id asc;"
     cursor = database.cursor(dictionary=True)
     cursor.execute(sql)
     data = cursor.fetchall()

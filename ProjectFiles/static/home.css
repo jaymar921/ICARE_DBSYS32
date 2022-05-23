@@ -157,7 +157,7 @@
 		line-height: 65px;
 		text-align: left;
         font-family: bignoodletitling, serif;
-		color: #fefe33;
+		color: black;
         font-weight: bold;
         font-size: 70px;
 		margin-bottom: 16px;
@@ -228,7 +228,7 @@ header span{
 
 
 footer{
-	position: fixed;
+	position: relative;
 	bottom: 0;
 }
 

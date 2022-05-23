@@ -32,7 +32,7 @@
 					against transmissible diseases
 					Such as rabies that also pose
 						  a risk to humans.</p>
-				<button type ="submit" onclick="document.getElementById('serv_code').value ='VX';document.getElementById('serv_price').value ={{data['VX']['price']}};document.getElementById('serv_description').value ='{{data['VX']['description']}}';show_serv_modal();">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='VX';document.getElementById('serv_price').value ={{data['VX']['price']}};document.getElementById('serv_description').value ='{{data['VX']['description']}}';document.getElementById('vax_type').style.display='block';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 
@@ -49,7 +49,7 @@
 					transmission of parasites to
 					you and your human family
 						   members!</p>
-				<button type ="submit" onclick="document.getElementById('serv_code').value ='DM';document.getElementById('serv_price').value ={{data['DM']['price']}};document.getElementById('serv_description').value ='{{data['DM']['description']}}';show_serv_modal();">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='DM';document.getElementById('serv_price').value ={{data['DM']['price']}};document.getElementById('serv_description').value ='{{data['DM']['description']}}';document.getElementById('vax_type').style.display='none';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
@@ -66,7 +66,7 @@
 					your rsk of ovarian cancer,
 					 especially if the fallopian
 					   tubes are removed</p>
-				<button type ="submit" onclick="document.getElementById('serv_code').value ='TL';document.getElementById('serv_price').value ={{data['TL']['price']}};document.getElementById('serv_description').value ='{{data['TL']['description']}}';show_serv_modal();">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='TL';document.getElementById('serv_price').value ={{data['TL']['price']}};document.getElementById('serv_description').value ='{{data['TL']['description']}}';document.getElementById('vax_type').style.display='none';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
@@ -83,7 +83,7 @@
 					 pests! To make your pet
 					 happy and healthy.</p>
 				<br>
-				<button type ="submit" onclick="document.getElementById('serv_code').value ='AF';document.getElementById('serv_price').value ={{data['AF']['price']}};document.getElementById('serv_description').value ='{{data['AF']['description']}}';show_serv_modal();">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='AF';document.getElementById('serv_price').value ={{data['AF']['price']}};document.getElementById('serv_description').value ='{{data['AF']['description']}}';document.getElementById('vax_type').style.display='none';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			  <div class="column">
@@ -100,7 +100,7 @@
 					order to make sure he or she
 					is as strong and as healthy as
 							possible.</p>
-				<button type ="submit" onclick="document.getElementById('serv_code').value ='VA';document.getElementById('serv_price').value ={{data['VA']['price']}};document.getElementById('serv_description').value ='{{data['VA']['description']}}';show_serv_modal();">Apply</button>
+				<button type ="submit" onclick="document.getElementById('serv_code').value ='VA';document.getElementById('serv_price').value ={{data['VA']['price']}};document.getElementById('serv_description').value ='{{data['VA']['description']}}';document.getElementById('vax_type').style.display='none';show_serv_modal();">Apply</button>
 				</div>
 			  </div>
 			</div>
@@ -124,6 +124,20 @@
 				<div class="modal-form-block">
 					<p>Service Price:</p>
 					<p><input id="serv_price" class="t_center modal_input" type="text" name="service_price" value="--" readonly></p>
+				</div>
+			</div>
+			<div class="modal-inner-form" id="vax_type" style="display: none">
+				<div class="modal-form-block">
+					<p>Vaccine Type:</p>
+					<p>
+						<select name="service_vax_type" required>
+							<option value="none" disabled selected>None</option>
+							<option value="Modified-live (attenuated)">Modified-live (attenuated)</option>
+							<option value="Inactivated (killed)">Inactivated (killed)</option>
+							<option value="Recombinant">Recombinant</option>
+							<option value="Toxoid">Toxoid</option>
+						</select>
+					</p>
 				</div>
 			</div>
 			<div class="modal-inner-form">
