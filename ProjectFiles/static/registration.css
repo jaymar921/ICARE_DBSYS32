@@ -81,7 +81,8 @@ button
 
 button:hover 
 {
-	background-color: pink;	
+	background-color: pink;
+	cursor: pointer;
 }
 
 button:active {
@@ -93,4 +94,41 @@ button:active {
 .cancel
 {
 	margin-left: 50%;
+}
+
+@media (max-width: 800px){
+    div
+    {
+        margin: auto;
+        width: 100%;
+        align-content: center;
+    }
+    form{
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 40px rgb(0, 0, 0);
+        align-content: center;
+    }
+    .address_line{
+        margin-left: 0%;
+        padding: 0;
+    }
+    .address_line input{
+        font-size: 17px;
+    }
+
+    button
+    {
+        font-size: 20px;
+        text-align: center;
+        padding: 5px;
+        background-color: #89CFF0;
+        width: 40%;
+        align-content: center;
+        border-radius:10px;
+    }
+    form button
+    {
+        transform: translate(-25%,0)
+    }
 }

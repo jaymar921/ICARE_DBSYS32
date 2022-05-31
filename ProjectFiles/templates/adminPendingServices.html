@@ -184,7 +184,7 @@
 				<h2>Hello Admin!</h2>
 			</div>
 				<ul>
-					<li class="active"><a href="/">Services</a></li>
+					<li class="active"><a href="/pending_services">Services</a></li>
 					<li><a href="/accounts_admin">Clients</a></li>
 					<li><a href="/transactions_admin">Transactions</a></li>
 					<li><a href="/employee/logout/{{account}}">Log Out</a></li>
@@ -203,6 +203,7 @@
 						<th class="col">Schedule Date</th>
 						<th class="col">Venue</th>
 						<th class="col">Status</th>
+						<th class="col">Remarks</th>
 						<th class="col">Action</th>
 					</tr>
 						{% for list in services %}

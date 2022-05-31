@@ -6,13 +6,15 @@ import utility
 from ProjectFiles.Entity.Entity import LoginCredentials, Account
 from Entity import Entity
 
+
 # connect to the database
-database = connector.connect(
-    host=utility.get_configuration()["host"],
-    user=utility.get_configuration()["user"],
-    password=utility.get_configuration()["password"],
-    database=utility.get_configuration()["database"]
-)
+def database() -> connector:
+    return connector.connect(
+        host=utility.get_configuration()["host"],
+        user=utility.get_configuration()["user"],
+        password=utility.get_configuration()["password"],
+        database=utility.get_configuration()["database"]
+    )
 
 
 def createAccount(account: Entity.Account, login_credential: Entity.LoginCredentials):
@@ -39,10 +41,12 @@ def createAccount(account: Entity.Account, login_credential: Entity.LoginCredent
                    f"'{account.city}'," \
                    f"'{account.zip}'," \
                    f"'{account.registry_date}');"
-        cursor = database.cursor()
+        db = database()
+        cursor = db.cursor()
         cursor.execute(sql)
-        database.commit()
+        db.commit()
         cursor.close()
+        db.close
         registerCredentials(login_credential)
     except Exception as e:
         print(e)
@@ -62,30 +66,36 @@ def registerCredentials(login_credential: Entity.LoginCredentials):
                f"'{login_credential.password}'," \
                f"'{login_credential.email}'," \
                f"'{login_credential.contact}')"
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def generateAccountID() -> int:
     sql: str = f"select * from `login_credentials`"
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
     data = data[len(data) - 1]
     cursor.close()
+    db.close()
     return data['login_id'] + 1
 
 
 def generateRecordID() -> int:
     try:
         sql: str = f"select * from `service_records`"
-        cursor = database.cursor(dictionary=True)
+        db = database()
+        cursor = db.cursor(dictionary=True)
         cursor.execute(sql)
         data: list = cursor.fetchall()
         data = data[len(data) - 1]
         cursor.close()
+        db.close()
         return data['record_id'] + 1
     except Exception:
         return 1
@@ -94,11 +104,13 @@ def generateRecordID() -> int:
 def generateTransactionID() -> int:
     try:
         sql: str = f"select * from `transaction`"
-        cursor = database.cursor(dictionary=True)
+        db = database()
+        cursor = db.cursor(dictionary=True)
         cursor.execute(sql)
         data: list = cursor.fetchall()
         data = data[len(data) - 1]
         cursor.close()
+        db.close()
         return data['transact_id'] + 1
     except Exception:
         return 1
@@ -128,10 +140,12 @@ def createEmployee(account: Entity.Employee, login_cred: Entity.LoginCredentials
                    f"'{account.city}'," \
                    f"'{account.zip}'," \
                    f"'{account.registry_date}');"
-        cursor = database.cursor()
+        db = database()
+        cursor = db.cursor()
         cursor.execute(sql)
-        database.commit()
+        db.commit()
         cursor.close()
+        db.close()
         registerCredentials(login_cred)
         createEmployeeAccount(account)
     except Exception as e:
@@ -140,10 +154,12 @@ def createEmployee(account: Entity.Employee, login_cred: Entity.LoginCredentials
 
 def createEmployeeAccount(account: Entity.Employee):
     sql: str = f"insert into `employee` (`emp_id`,`acc_id`,`position`) values ('{account.emp_id}','{account.acc_id}','{account.position}')"
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def loginAccount(username: str, password: str, is_email: bool = False) -> list:
@@ -151,8 +167,8 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
         sql = f"select * from `login_credentials` where email='{username}' and password='{password}'"
     else:
         sql = f"select * from `login_credentials` where username='{username}' and password='{password}'"
-
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
     cursor.close()
@@ -166,7 +182,7 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
             contact=data[0]['contact_no']
         )
         sql: str = f"select * from `account` where acc_id='{loginCred.acc_id}'"
-        cursor = database.cursor(dictionary=True)
+        cursor = db.cursor(dictionary=True)
         cursor.execute(sql)
         data: dict = cursor.fetchall()
         cursor.close()
@@ -183,7 +199,7 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
             data[0]["registry_date"]
         )
         sql: str = f"select * from `employee` where acc_id='{loginCred.acc_id}'"
-        cursor = database.cursor(dictionary=True)
+        cursor = db.cursor(dictionary=True)
         cursor.execute(sql)
         data: dict = cursor.fetchall()
         cursor.close()
@@ -202,8 +218,11 @@ def loginAccount(username: str, password: str, is_email: bool = False) -> list:
                 data[0]['emp_id'],
                 data[0]['position'],
             )
+            db.close()
             return [account, loginCred, employee]
+        db.close()
         return [account, loginCred]
+    db.close()
     return []
 
 
@@ -223,29 +242,35 @@ def registerPet(pet: Entity.Pet):
                f"'{pet.registry_date}'," \
                f"'{pet.status}'" \
                f")"
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def getPets(username: str) -> list:
     sql: str = f"select `name`,`age`,`gender`,`breed`,`specie`,`blood_type`,`weight`," \
                f"`registry_date`,`status`,`pet_id` from `pet` " \
-               f"p, `login_credentials` l where l.username = '{username}' and p.owner_id = l.acc_id; "
-    cursor = database.cursor(dictionary=True)
+               f"p, `login_credentials` l where l.username = '{username}' and p.owner_id = l.acc_id and status='OK'; "
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
 
 
 def getServices() -> list:
     sql: str = "select * from service"
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
+    db.close()
     print(data)
     return data
 
@@ -253,88 +278,106 @@ def getServices() -> list:
 def scheduleService(data: dict):
     print(data['vax_type'])
     sql: str = f"insert into `service_records` (`record_id`,`pet_id`,`service_code`,`date`,`venue`,`status`,`remarks`) values ('{generateRecordID()}','{data['pet_id']}','{data['service_code']}','{data['date']}','{data['venue']}','PENDING','{data['vax_type']}');"
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def getPendingSchedules() -> list:
     sql: str = "select * from `service_records`;"
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
 
 
 def getAdminPendingSchedules() -> list:
-    sql: str = "select record_id, p.pet_id, owner_id, description as service, date, venue, s.status from service_records s, pet p, service where p.pet_id = s.pet_id and s.service_code = service.service_code and s.status = 'PENDING';"
-    cursor = database.cursor(dictionary=True)
+    sql: str = "select record_id, p.pet_id, owner_id, description as service, date, venue, s.status, s.remarks from service_records s, pet p, service where p.pet_id = s.pet_id and s.service_code = service.service_code and s.status = 'PENDING';"
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
 
 
 def employeeActivity(e_id: str, log_in: str, log_out: str, today: str, interaction: str):
     print([e_id, log_in, log_out, today, interaction])
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     sql: str = f"insert into employee_activity values ('NULL','{e_id}','{log_in}','{log_out}','{today}','{interaction}');"
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def getAdminApprovedDeclinedSchedules() -> list:
     sql: str = "select sr.record_id, sr.pet_id, p.owner_id, s.description as service, sr.date, sr.venue, sr.status from service_records sr, pet p,service s where p.pet_id = sr.pet_id and s.service_code = sr.service_code and sr.remarks='CHECKED';"
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data: list = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
 
 
 def updateAdminPendingSchedules(data: dict):
     sql: str = f"update service_records set status='{data['remark']}', remarks='CHECKED' where record_id='{data['record_id']}'; "
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def addTransactions(data: dict):
     transact_id: int = generateTransactionID()
     sql: str = f"update service_records set status='{data['remark']}', remarks='{transact_id}' where record_id='{data['record_id']}'; "
-    cursor = database.cursor()
+    db = database()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
     for service in getServices():
         if str(service['description']) == str(data['service']):
             data['price'] = service['price']
     sql: str = f"insert into `transaction` (`transact_id`,`acc_id`,`amount`,`status`) values ({transact_id},'{data['pet_owner']}','{data['price']}','{data['remark']}');"
-    cursor = database.cursor()
+    cursor = db.cursor()
     cursor.execute(sql)
-    database.commit()
+    db.commit()
     cursor.close()
+    db.close()
 
 
 def getClients() -> list:
     sql: str = "select a.acc_id as UUID, lastname, firstname, birthdate, house_no, street, barangay, city, zip, " \
                "registry_date, case when a.acc_id = e.acc_id then 'YES' else '' end as ADMIN from account a, " \
                "employee e; "
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
 
 
 def getTransactions() -> list:
     sql: str = "select t.transact_id,a.lastname,a.firstname,p.name,s.description,t.amount,t.status from transaction t, account a, pet p, service s, service_records sr where t.acc_id = a.acc_id and p.owner_id = t.acc_id and sr.service_code = s.service_code and p.pet_id = sr.pet_id and sr.remarks = t.transact_id order by t.transact_id asc;"
-    cursor = database.cursor(dictionary=True)
+    db = database()
+    cursor = db.cursor(dictionary=True)
     cursor.execute(sql)
     data = cursor.fetchall()
     cursor.close()
+    db.close()
     return data
